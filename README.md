@@ -1,11 +1,12 @@
 # Micropython Template Repo
 
-Template for using the micropython pyboard with the BNO055
+Template for using the micropython pyboard with the BNO055 over I2C.
+This project uses a pyb with theadding enabled. 
 
 ## Within the Repo
 
 * `main.py`  -> example main 
-* `_drivers` -> dir of common files 
+* `_drivers/` -> dir of common files 
 * `flash.sh` -> script to flash pyb
 
 ## Use
