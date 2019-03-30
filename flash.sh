@@ -1,38 +1,34 @@
 # usage: ./flash.sh <main.py> [-u] 
 
-#check first arg is a file
+# user defs
+SD_CARD="SD"
+
+# globals
+MOUNT_DIR=""
+UNMOUNT=""
+
+# check first arg is a file
 [ -f "$1" ] || exit
 PROG="$1"
 
-# determine OS type and mount location
-LINUX=0
-MAC=0
-MOUNT_DIR=""
-
+# determine OS type and mount location 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
-    LINUX=1
     MOUNT_DIR="/media/$USER"
+    UNMOUNT="umount $MOUNT_DIR/"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
-    MAC=1
     MOUNT_DIR="/Volumes"
+    UNMOUNT="diskutil unmount "
 else
     echo "Unknown OS"
 fi
 
 # flash pyb
 echo "flashing pyb with $PROG"
-cp $PROG $MOUNT_DIR/SD/main.py
-cp _drivers/*.py $MOUNT_DIR/SD/
+cp $PROG $MOUNT_DIR/$SD_CARD/main.py
+cp _drivers/*.py $MOUNT_DIR/$SD_CARD/
 
 # unmount SD card
 if [[ "$2" == "-u" ]]; then 
-	echo "unmounting SD card"
-
-	if [ "$LINUX" -eq "1" ]; then
-	    umount $MOUNT_DIR/SD
-	elif [ "$MAC" -eq "1" ]; then
-	    diskutil unmount SD
-	else 
-		echo "Unknown OS"
-	fi
+    echo "unmounting SD card"
+    $UNMOUNT$SD_CARD
 fi 
